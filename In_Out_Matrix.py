@@ -17,10 +17,12 @@ class In_Out_Matrix:
         self.column_char_map.update({'T': 3})
         self.column_char_map.update({'N': 4})
         self.char_column_map = dict((v, k) for k, v in self.column_char_map.iteritems())
+        self.edges = None
 
     def construct_in_out_matrix(self, nodes, edges, string_hash_map):
         self.in_matrix = BitArray2D.BitArray2D(rows=len(nodes), columns=5)
         self.out_matrix = BitArray2D.BitArray2D(rows=len(nodes), columns=5)
+        self.edges = edges
 
         print(self.in_matrix.size())
 
@@ -68,6 +70,37 @@ class In_Out_Matrix:
 
         return column_header_set
 
+    #delete row,col value from in_matrix
+    def delete_from_In(self, row, col):
+        self.in_matrix.__setitem__((row, col), 0)
+        return
 
+    #delete row,col value from out_matrix
+    def delete_from_Out(self, row, col):
+        self.out_matrix.__setitem__((row, col,), 0)
+        return
 
+    def delete_to_In_Out(self,row):
+        for i in self.column_char_map.values():
+            self.out_matrix.__setitem__((row,i),0)
+            self.in_matrix.__setitem__((row,i),0)
 
+        return
+    #update in and out matrix to expand it
+    def insert_to_In_Out(self,curr_size,string_hash_map):
+        new_in_matrix = BitArray2D.BitArray2D(rows=len(curr_size), columns=5)
+        new_out_matrix = BitArray2D.BitArray2D(rows=len(curr_size), columns=5)
+
+        # for str in nodes:
+        count = 0;
+        for v1, v2 in self.edges:
+            new_in_matrix.__setitem__((string_hash_map.get(v2), self.column_char_map.get(v1[0])), 1)
+            new_out_matrix.__setitem__((string_hash_map.get(v1), self.column_char_map.get(v2[len(v2) - 1])), 1)
+            count += 1;
+
+        for i in self.column_char_map.values():
+            new_in_matrix._setitem((curr_size, i), 0)
+            new_out_matrix.__setitem__((curr_size, i), 0)
+        self.in_matrix = new_in_matrix
+        self.out_matrix = new_out_matrix
+        return

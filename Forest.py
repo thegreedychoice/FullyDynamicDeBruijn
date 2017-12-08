@@ -154,9 +154,9 @@ class Forest:
             self.nodeDict.update({hash_val: new_node})
             self.str_to_mph[new_kmer] =  hash_val
             self.treeRoots.append(new_node)
-
+            self.countNumberofKmers+=1
             #also initialize in In and Out Matrix
-
+            self.inOutMatrix.insert_to_In_Out(self.countNumberofKmers,self.str_to_mph)
             print "Node Inserted!"
             return True
 
@@ -236,12 +236,9 @@ class Forest:
                 if node in self.treeLeafs:
                     self.treeLeafs.remove(node)
                 node = None
+                self.inOutMatrix.delete_to_In_Out(hash)
                 print "Leaf Node deleted!"
                 return  True
-
-
-
-        #Update In and Out Matrix
 
         else:
             print "Node not present. Can't perform deletion!"
