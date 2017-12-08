@@ -88,8 +88,11 @@ def main():
     result = newForest.search(searchedNode, 0)
     print result
 
-    isDeleted = newForest.delete('CTA')
-    print isDeleted
+    #nodes_to_update_OutM = newForest.incoming('AGC')
+    nodes_to_update_InM = newForest.outgoing('ATA')
+
+    isDeleted = newForest.delete('CGA')
+    #print isDeleted
 
 
 
