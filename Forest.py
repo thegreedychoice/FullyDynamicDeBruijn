@@ -160,7 +160,116 @@ class Forest:
             print "Node Inserted!"
             return True
 
-    
+    #get the incoming nodes to a particular kmer from InMatrix
+    def get_incoming_nodes(self, kmer):
+        hash = self.str_to_mph.get(kmer)
+
+        if hash == None:
+            return dict()
+
+        #check if hash has a valid entry in In Matrix and get all the incoming edges
+        list = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+
+
+        nodes_to_be_updated_OutM = dict()
+
+        for c in list:
+            valueDeque = deque(kmer)  # 'C G A'
+            # rotate the list right (kmer)
+            valueDeque.rotate(-1)  # 'A C G'
+            # convert back to list (kmer)
+            valueList = list(collections.deque(valueDeque))
+            # add column header to the end of the kmer value
+            col_tobe_updated = valueList[0]
+            valueList[0] = c  # 'T C G'
+            # convert list back to a string
+            kmer_string = ''.join(valueList)
+            out_node_hash = self.str_to_mph.get(kmer_string)
+            nodes_to_be_updated_OutM[out_node_hash] = col_tobe_updated
+
+    def incoming(self, kmer):
+
+
+        hash = self.str_to_mph.get(kmer)
+
+        if hash == None:
+            return
+
+        # get address
+        node = self.nodeDict.get(hash)
+        nodes_to_be_updated_OutM = dict()
+
+        if True:
+
+
+
+            #We need to create the next adjacent outgoing in the tree as the new root for both Cases
+            # get the correct outgoing node (connected in the tree) from out matrix and make it the new root node
+
+            in_edges = self.inOutMatrix.return_column_headers_In(kmer, self.str_to_mph)
+
+            potentialStrings = {}
+            k = len(kmer)
+
+
+            for c in in_edges:  # c = 'T'
+                valueDeque = deque(kmer)  # 'C G A'
+                # rotate the list left (kmer)
+                valueDeque.rotate(1)  # 'A C G'
+                col_to_be_updated = valueDeque[0]
+                # convert back to list (kmer)
+                valueList = list(collections.deque(valueDeque))
+                # add column header to the end of the kmer value
+                valueList[0] = c # 'C G T'
+                # convert list back to a string
+                kmer_string = ''.join(valueList)
+                out_node_hash = self.str_to_mph.get(kmer_string)
+                nodes_to_be_updated_OutM[kmer_string] = col_to_be_updated
+
+
+        return nodes_to_be_updated_OutM
+
+    def outgoing(self, kmer):
+
+
+        hash = self.str_to_mph.get(kmer)
+
+        if hash == None:
+            return
+
+        # get address
+        node = self.nodeDict.get(hash)
+        nodes_to_be_updated_InM = dict()
+
+        if True:
+
+
+
+            #We need to create the next adjacent outgoing in the tree as the new root for both Cases
+            # get the correct outgoing node (connected in the tree) from out matrix and make it the new root node
+
+            in_edges = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+
+            potentialStrings = {}
+            k = len(kmer)
+
+
+            for c in in_edges:  # c = 'C'
+                valueDeque = deque(kmer)  # 'G A T'
+                col_to_be_updated = valueDeque[0]
+                # rotate the list left (kmer)
+                valueDeque.rotate(-1)  # 'A T G'
+                # convert back to list (kmer)
+                valueList = list(collections.deque(valueDeque))
+                # add column header to the end of the kmer value
+                valueList[k-1] = c # 'C G T'
+                # convert list back to a string
+                kmer_string = ''.join(valueList)
+                out_node_hash = self.str_to_mph.get(kmer_string)
+                nodes_to_be_updated_InM[kmer_string] = col_to_be_updated
+
+
+        return nodes_to_be_updated_InM
 
     def delete(self, kmer):
 
@@ -238,7 +347,7 @@ class Forest:
                 node = None
                 self.inOutMatrix.delete_to_In_Out(hash)
                 print "Leaf Node deleted!"
-                return  True
+                return True
 
         else:
             print "Node not present. Can't perform deletion!"
