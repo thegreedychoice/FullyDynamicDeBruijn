@@ -109,4 +109,18 @@ class In_Out_Matrix:
         self.out_matrix = new_out_matrix
         return
 
+    def nullify_entry_In(self, index, columnHeader):
+        self.in_matrix.__setitem__((index, self.column_char_map.get(columnHeader)), 0)
+        return self.in_matrix
+
+    def nullify_entry_Out(self, index, columnHeader):
+        self.out_matrix.__setitem__((index, self.column_char_map.get(columnHeader)), 0)
+        return self.out_matrix
+
+    def nullify_row(self, index):
+        for columnHeader in range(5):
+            self.in_matrix.__setitem__((index, columnHeader), 0)
+            self.out_matrix.__setitem__((index, columnHeader), 0)
+        return self.in_matrix, self.out_matrix
+
 

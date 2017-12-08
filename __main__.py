@@ -70,7 +70,29 @@ def main():
     newForest = Forest(inOut, k, initKmer, string_hash_map)
     print "Forest Construction ended"
 
+    print(in_matrix)
+    print("******************************")
+    print(out_matrix)
+    print("******************************")
+
     print("--- %s seconds for hashing and forest construction ---" % (time.time() - start_time))
+
+    index, char = raw_input("Enter the index and the column header you want to delete:").split()
+    in_matrix, out_matrix = inOut.nullify_entry_In(int(index), char)
+    print(in_matrix)
+    print("******************************")
+    index, char = raw_input("Enter the index and the column header you want to delete:").split()
+    in_matrix, out_matrix = inOut.nullify_entry_Out(int(index), char)
+    print(out_matrix)
+    print("******************************")
+
+    index2 = raw_input("Enter the index of the row you want to nullify")
+    in_matrix, out_matrix = inOut.nullify_row(int(index2))
+    print(in_matrix)
+    print("******************************")
+    print(out_matrix)
+    print("******************************")
+
     print("Enter the nodes you want to add, with the size k")
     s = raw_input("Enter the nodes you want to add, seprated by space, with the size k")
     start_time = time.time()
@@ -271,4 +293,4 @@ def test1():
 
 
 if __name__ == "__main__":
-    test()
+    main()
