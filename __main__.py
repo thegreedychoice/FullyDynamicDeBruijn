@@ -44,7 +44,12 @@ def main():
                 if len(firstK) >= k:
                     break
 
-    firstK = (firstK[:k] + '..') if len(firstK) > k else firstK
+
+    firstK = (firstK[:k]) if len(firstK) > k else firstK
+
+    print "FirstK"
+    print firstK
+
 
     # fileData = open("test.txt", "r").read().replace('\n', '')
     # print(fileData)
