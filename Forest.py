@@ -65,7 +65,7 @@ class Forest:
 
             rootIndex += 1
 
-            print rootIndex
+            #print rootIndex
 
     # recursive function to build tree
     def insert_init(self, node, prev_node, kmer):
@@ -140,14 +140,15 @@ class Forest:
         isAlreadyPresent = self.search(new_kmer, 0)
 
         if isAlreadyPresent:
-            print "Node already present. Can't be inserted!"
+            #print "Node already present. Can't be inserted!"
             return False
         else:
             #create a new node and insert it as a root
 
             #generate hash for this newley created node
             #hash_val = self.str_to_mph.get(new_kmer)
-            hash_val = 11
+
+            hash_val = max(self.str_to_mph.values()) + 1
 
             new_node = TreeNode(new_kmer, 0, None, True)
 
@@ -157,7 +158,7 @@ class Forest:
 
             #also initialize in In and Out Matrix
 
-            print "Node Inserted!"
+            #print "Node Inserted!"
             return True
 
     #get the incoming nodes to a particular kmer from InMatrix
@@ -187,6 +188,8 @@ class Forest:
             out_node_hash = self.str_to_mph.get(kmer_string)
             nodes_to_be_updated_OutM[out_node_hash] = col_tobe_updated
 
+    #this method gives out all the nodes(hash) that had an incoming edge towards kmer
+    #So the OutMatrix needs to be updated for these nodes
     def incoming(self, kmer):
 
 
@@ -199,14 +202,18 @@ class Forest:
         node = self.nodeDict.get(hash)
         nodes_to_be_updated_OutM = dict()
 
-        if True:
+        if node != None:
 
 
 
             #We need to create the next adjacent outgoing in the tree as the new root for both Cases
             # get the correct outgoing node (connected in the tree) from out matrix and make it the new root node
 
-            in_edges = self.inOutMatrix.return_column_headers_In(kmer, self.str_to_mph)
+            #if it gives an exception, then the qquery kmer is dynamically inserted
+            try:
+                in_edges = self.inOutMatrix.return_column_headers_In(kmer, self.str_to_mph)
+            except:
+                in_edges = []
 
             potentialStrings = {}
             k = len(kmer)
@@ -224,11 +231,13 @@ class Forest:
                 # convert list back to a string
                 kmer_string = ''.join(valueList)
                 out_node_hash = self.str_to_mph.get(kmer_string)
-                nodes_to_be_updated_OutM[kmer_string] = col_to_be_updated
+                nodes_to_be_updated_OutM[out_node_hash] = col_to_be_updated
 
 
         return nodes_to_be_updated_OutM
 
+    # this method gives out all the nodes(hash) that had an outgoing edge from kmer
+    #So the In matrix needs to be updated for these nodes
     def outgoing(self, kmer):
 
 
@@ -241,14 +250,18 @@ class Forest:
         node = self.nodeDict.get(hash)
         nodes_to_be_updated_InM = dict()
 
-        if True:
+        if node != None:
 
 
 
             #We need to create the next adjacent outgoing in the tree as the new root for both Cases
             # get the correct outgoing node (connected in the tree) from out matrix and make it the new root node
 
-            in_edges = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+            #if it gives an exception, then the qquery kmer is dynamically inserted
+            try:
+                in_edges = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+            except:
+                in_edges = []
 
             potentialStrings = {}
             k = len(kmer)
@@ -266,7 +279,7 @@ class Forest:
                 # convert list back to a string
                 kmer_string = ''.join(valueList)
                 out_node_hash = self.str_to_mph.get(kmer_string)
-                nodes_to_be_updated_InM[kmer_string] = col_to_be_updated
+                nodes_to_be_updated_InM[out_node_hash] = col_to_be_updated
 
 
         return nodes_to_be_updated_InM
@@ -300,7 +313,13 @@ class Forest:
 
                 #We need to create the next adjacent outgoing in the tree as the new root for both Cases
                 # get the correct outgoing node (connected in the tree) from out matrix and make it the new root node
-                out_edges = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+
+                #exception happens if node to be deleted is a dynamic node
+                try:
+                    out_edges = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+                except:
+                    out_edges = []
+                    return True
 
                 potentialStrings = {}
                 k = len(kmer)
@@ -316,7 +335,7 @@ class Forest:
                     # convert list back to a string
                     kmer_string = ''.join(valueList)
                     out_node_hash = self.str_to_mph.get(kmer_string)
-                    # potentialStrings.update({out_node_hash: kmer_string})
+
 
 
                     # Now potential strings = Hashes of ['CGT', 'CGA']
@@ -336,7 +355,29 @@ class Forest:
                         out_node.isRoot = True
                         out_node.val = kmer_string
                         self.treeRoots.append(out_node)
-                        print "Node has been deleted!"
+
+
+                        #remove from self.nodeDict as it is used to do search query
+                        self.nodeDict[hash] = None
+
+                        #################################################################
+
+                        #Also delete all references of this node from in and out matrices
+
+                        #dict of all nodes whose columns need to be set 0 in Out Matrix
+                        #          { 4 : 'C' }  where 4 is the hash of 'CGA' and 'C' is column
+                        nodes_to_update_OutM = self.incoming(kmer)
+
+                        #dict of all nodes whose columns need to be set 0 in In Matrix
+                        #          { 4 : 'T' }  where 4 is the hash of 'CGA' and 'T' is column
+                        nodes_to_update_InM = self.outgoing(kmer)
+
+                        #################################################################
+
+
+
+
+                        #print "Node has been deleted!"
                         return True
 
                 return False
@@ -345,7 +386,28 @@ class Forest:
                 if node in self.treeLeafs:
                     self.treeLeafs.remove(node)
                 node = None
-                print "Leaf Node deleted!"
+
+
+
+
+
+                #################################################################
+
+                # Also delete all references of this node from in and out matrices
+
+                # dict of all nodes whose columns need to be set 0 in Out Matrix
+                #          { 4 : 'C' }  where 4 is the hash of 'CGA' and 'C' is column
+                nodes_to_update_OutM = self.incoming(kmer)
+
+                # dict of all nodes whose columns need to be set 0 in In Matrix
+                #          { 4 : 'T' }  where 4 is the hash of 'CGA' and 'T' is column
+                nodes_to_update_InM = self.outgoing(kmer)
+
+                #################################################################
+
+
+
+                #print "Leaf Node deleted!"
                 return True
 
 
@@ -353,7 +415,7 @@ class Forest:
         #Update In and Out Matrix
 
         else:
-            print "Node not present. Can't perform deletion!"
+            #print "Node not present. Can't perform deletion!"
             return False
 
 
@@ -434,6 +496,9 @@ class Forest:
         #get address
         node = self.nodeDict.get(hash)
 
+        if node == None:
+            return False
+
         if node.isRoot and searchCount == 0:
             return True
 
@@ -463,11 +528,11 @@ class Forest:
         true_parent_hash = node.parent.val
 
         if node.parent.isRoot == True:
-            print "Found"
+            #print "Found"
             return True
 
         if true_parent_hash not in potentialStrings.keys():
-            print("NOT FOUND IN MATRIX")
+            #print("NOT FOUND IN MATRIX")
             return False
 
         elif searchCount > self.maxTreeHeight:
@@ -535,7 +600,7 @@ class Forest:
         # update curr pointer
         # visited for new node is
         curr = newNode
-        print("here")
+        #print("here")
         # print(kmer_string)
         # call recursively until we either reach max height or reach all the nodes visited
         return curr, kmer_string

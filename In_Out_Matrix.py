@@ -60,8 +60,8 @@ class In_Out_Matrix:
         kmer_to_column_header = {}
         column_header_set = set()
         mph_val = str_to_mph.get(kmer)
-        print("mph val")
-        print(mph_val)
+        #print("mph val")
+        #print(mph_val)
         for j in range(5):
             if (self.out_matrix[godel(mph_val, j)]==1):
                 column_header_set.add(self.char_column_map.get(j))

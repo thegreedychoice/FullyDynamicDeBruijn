@@ -1,6 +1,6 @@
 import graphviz as gv
 import RabinKarpHash as hash
-import perfection.czech
+#import perfection.czech
 import MinimalPerfectHashing as mph
 
 
@@ -22,10 +22,11 @@ def construct_de_bruijn_graph(kmer, k):
 
     hash_set = set(node_hash_values.values())
     if (len(hash_set) == len(node_hash_values)):
-        print("Distinct hashed values by rabin karp")
+        #print("Distinct hashed values by rabin karp")
         str_to_mph = compute_mph(node_hash_values)
     else:
-        print("Duplicate hashed values by rabin karp")
+        #print("Duplicate hashed values by rabin karp")
+        pass
 
 
     return nodes, edges, str_to_mph, node_hash_values

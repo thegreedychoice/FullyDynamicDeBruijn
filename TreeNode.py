@@ -1,5 +1,5 @@
 from RabinKarpHash import *
-import perfection.czech
+#import perfection.czech
 from In_Out_Matrix import *
 from collections import deque
 

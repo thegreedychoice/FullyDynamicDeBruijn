@@ -1,6 +1,6 @@
 def static_rabin_karp(permutation_set):
     static_permutation_hash_set = {}
-    print("I m computing rkp4")
+    #print("I m computing rkp4")
     for str in permutation_set:
         val = 0
         char_num = 0
