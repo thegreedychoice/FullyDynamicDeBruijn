@@ -28,6 +28,7 @@ def main():
     #print(hash_set)
     #perfect_hash = perfection.make_hash(hash_set.values())
     fileData = ""
+    firstK = ""
     '''
     with open('5mb.fastq', 'r') as f:
         for count, line in enumerate(f, start=3):
@@ -35,6 +36,16 @@ def main():
                 fileData += line.replace('\n', '')
                 # print(line)
     '''
+    #firstK is the first K characters needed to create the first root, to use just the out matrix and not the in matrix
+    with open('5mb.fastq', 'r') as f:
+        for count, line in enumerate(f, start=3):
+            if count % 4 == 0:
+                firstK += line.replace('\n', '')
+                if len(firstK) >= k:
+                    break
+
+    firstK = (firstK[:k] + '..') if len(firstK) > k else firstK
+
     # fileData = open("test.txt", "r").read().replace('\n', '')
     # print(fileData)
     fileData = "ACGATGATCAGTAGCATGATCAGT"
