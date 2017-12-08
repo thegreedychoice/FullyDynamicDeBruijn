@@ -77,6 +77,7 @@ def main():
 
     print("--- %s seconds for hashing and forest construction ---" % (time.time() - start_time))
 
+    '''
     index, char = raw_input("Enter the index and the column header you want to delete:").split()
     in_matrix, out_matrix = inOut.nullify_entry_In(int(index), char)
     print(in_matrix)
@@ -92,6 +93,9 @@ def main():
     print("******************************")
     print(out_matrix)
     print("******************************")
+
+
+    '''
 
     print("Enter the nodes you want to add, with the size k")
     s = raw_input("Enter the nodes you want to add, seprated by space, with the size k")
@@ -117,8 +121,8 @@ def main():
     nodes_to_update_OutM = newForest.incoming('ATA')
     nodes_to_update_InM = newForest.outgoing('ATA')
 
-    isDeleted = newForest.delete('CGA')
-    #print isDeleted
+    isDeleted = newForest.delete('GAT')
+    print isDeleted
 
 
 

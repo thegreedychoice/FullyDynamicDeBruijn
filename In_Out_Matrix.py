@@ -75,7 +75,7 @@ class In_Out_Matrix:
         test = self.out_matrix.__getitem__((row, col))
         self.in_matrix.__setitem__((row, col), 0)
         return
-
+    '''
     #delete row,col value from out_matrix
     def delete_from_Out(self, row, col):
         value = self.column_char_map.get(col)
@@ -108,6 +108,8 @@ class In_Out_Matrix:
         self.in_matrix = new_in_matrix
         self.out_matrix = new_out_matrix
         return
+
+    '''
 
     def nullify_entry_In(self, index, columnHeader):
         self.in_matrix.__setitem__((index, self.column_char_map.get(columnHeader)), 0)

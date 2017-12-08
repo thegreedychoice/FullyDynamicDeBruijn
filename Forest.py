@@ -362,15 +362,24 @@ class Forest:
 
                         #################################################################
 
-                        #Also delete all references of this node from in and out matrices
+                        # Also delete all references of this node from in and out matrices
 
-                        #dict of all nodes whose columns need to be set 0 in Out Matrix
+                        # dict of all nodes whose columns need to be set 0 in Out Matrix
                         #          { 4 : 'C' }  where 4 is the hash of 'CGA' and 'C' is column
                         nodes_to_update_OutM = self.incoming(kmer)
 
-                        #dict of all nodes whose columns need to be set 0 in In Matrix
+                        for node_hash in nodes_to_update_OutM:
+                            self.inOutMatrix.nullify_entry_Out(node_hash, nodes_to_update_OutM[node_hash])
+
+                        # dict of all nodes whose columns need to be set 0 in In Matrix
                         #          { 4 : 'T' }  where 4 is the hash of 'CGA' and 'T' is column
                         nodes_to_update_InM = self.outgoing(kmer)
+
+                        for node_hash in nodes_to_update_InM:
+                            self.inOutMatrix.nullify_entry_In(node_hash, nodes_to_update_InM[node_hash])
+
+                        # set all columns headers to 0 in both In & Out for the deleted node
+                        self.inOutMatrix.nullify_row(hash)
 
                         #################################################################
 
@@ -399,9 +408,18 @@ class Forest:
                 #          { 4 : 'C' }  where 4 is the hash of 'CGA' and 'C' is column
                 nodes_to_update_OutM = self.incoming(kmer)
 
+                for node_hash in nodes_to_update_OutM:
+                    self.inOutMatrix.nullify_entry_Out(node_hash, nodes_to_update_OutM[node_hash])
+
                 # dict of all nodes whose columns need to be set 0 in In Matrix
                 #          { 4 : 'T' }  where 4 is the hash of 'CGA' and 'T' is column
                 nodes_to_update_InM = self.outgoing(kmer)
+
+                for node_hash in nodes_to_update_InM:
+                    self.inOutMatrix.nullify_entry_In(node_hash, nodes_to_update_InM[node_hash])
+
+                # set all columns headers to 0 in both In & Out for the deleted node
+                self.inOutMatrix.nullify_row(hash)
 
                 #################################################################
 
