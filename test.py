@@ -231,7 +231,7 @@ def test_2():
     print "####################################"
 
 
-    k = 4
+    k = 10
     print "\n\n"
 
     #Step 2: Create De-bruijn graph
@@ -258,6 +258,12 @@ def test_2():
     print "Roots in the Forest :"
     list =  newForest.treeRoots
     for node in list:
+        try:
+            if node.val == None:
+                print "None"
+                pass
+        except:
+            pass
         print node.val
 
     print "\n\n"
