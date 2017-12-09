@@ -70,6 +70,8 @@ class Forest:
     # recursive function to build tree
     def insert_init(self, node, prev_node, kmer):
 
+        if node.val == None:
+            return None
 
         # if the new height is overflown (above the max tree height we return and get that node)
         if node.level > self.maxTreeHeight:
@@ -84,7 +86,9 @@ class Forest:
         checkedIndex = node.val
         if node.isRoot == True:
             checkedIndex = self.str_to_mph.get(node.val)
-        self.visitedList[checkedIndex] = 1
+
+        if checkedIndex != None:
+            self.visitedList[checkedIndex] = 1
 
         # initialize current node
         curr = node
