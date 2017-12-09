@@ -34,7 +34,7 @@ You will need:
 
 For testing purposes we have created 3 instances of varying file sizes(around 5MB, 10MB, 20MB) FASTQ file (s_6_1.fastq.gz) obtained from [here] (http://spades.bioinf.spbau.ru/spades_test_datasets/ecoli_mc/). 
 
-Run **'__main__.py'** and follow prompts to input size of K and k-mers for searching, insertion and deletion.
+Run **'test.py'** and follow prompts to input size of K and k-mers for searching, insertion and deletion.
 ```
 
             python test.py
