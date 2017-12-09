@@ -37,7 +37,7 @@ For testing purposes we have created 3 instances of varying file sizes(around 5M
 Run **'__main__.py'** and follow prompts to input size of K and k-mers for searching, insertion and deletion.
 ```
 
-            python __main__.py
+            python test.py
 ```
 
 
