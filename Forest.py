@@ -321,6 +321,11 @@ class Forest:
                 #exception happens if node to be deleted is a dynamic node
                 try:
                     out_edges = self.inOutMatrix.return_column_headers_Out(kmer, self.str_to_mph)
+                    if len(out_edges) == 0 and node.isRoot == True:
+                        node = None
+                        self.nodeDict[hash] = None
+                        return True
+
                 except:
                     out_edges = []
                     return True
