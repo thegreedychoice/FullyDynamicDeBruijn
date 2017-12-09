@@ -22,7 +22,7 @@ class In_Out_Matrix:
         self.in_matrix = BitArray2D.BitArray2D(rows=len(nodes), columns=5)
         self.out_matrix = BitArray2D.BitArray2D(rows=len(nodes), columns=5)
 
-        print(self.in_matrix.size())
+        #print(self.in_matrix.size())
 
         # for str in nodes:
         count = 0;
@@ -32,11 +32,11 @@ class In_Out_Matrix:
             count+=1;
             # print(count)
 
-        print("In Matrix")
-        print(self.in_matrix)
-        print("************************************")
-        print("Out Matrix")
-        print(self.out_matrix)
+        #print("In Matrix")
+        #print(self.in_matrix)
+        #print("************************************")
+        #print("Out Matrix")
+        #print(self.out_matrix)
 
         #print(string_hash_map.get("TAC"))
         #in_column_header = return_column_headers_In("TAC", in_matrix, out_matrix, string_hash_map, char_column_map)
